@@ -110,18 +110,6 @@ class fastQuoteInstaller
             'gid' => $gid
         );
         $db->insert_query('settings', $setting);
-        
-        $setting = array(
-            'sid' => 'NULL',
-            'name' => 'fastQuoteFullQuote',
-            'title' => $db->escape_string($lang->fastQuoteFullQuote),
-            'description' => $db->escape_string($lang->fastQuoteFullQuoteDesc),
-            'optionscode' => 'onoff',
-            'value' => '1',
-            'disporder' => $disporder++,
-            'gid' => $gid
-        );
-        $db->insert_query('settings', $setting);
     }
 
     public static function uninstall()

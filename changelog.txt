@@ -1,3 +1,9 @@
+Version 1.5
+    * fix XSS vulnerability
+    * remove full quote mode (force enabled)        
+
+
+
 Version 1.4
     * change license to LGPL v3
     * change plugin sign in hooks
