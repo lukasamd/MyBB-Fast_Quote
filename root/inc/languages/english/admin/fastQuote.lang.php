@@ -39,6 +39,3 @@ $l['fastQuoteFormNameDesc'] = '"Name" attribute for quick reply form element (in
 $l['fastQuoteFieldName'] = 'Quick reply field name';
 $l['fastQuoteFieldNameDesc'] = '"Name" attribute for quick reply textarea element (in 99% cases the default option is correct)';
 $l['fastQuoteFieldNameDesc'] .= '<br />If you use "Advanced Quick Reply Form Plugin" you should change this setting to "message_new".';
-
-$l['fastQuoteFullQuote'] = 'Enable MyCode quote in fast quote';
-$l['fastQuoteFullQuoteDesc'] = 'Allows to quote MyCode tags.<br />Disable if you have problem with quote or showthread page.';

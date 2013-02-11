@@ -39,6 +39,3 @@ $l['fastQuoteFormNameDesc'] = 'Wartość atrybutu "name" elementu "form" dla szy
 $l['fastQuoteFieldName'] = 'Nazwa pola szybkiej odpowiedzi';
 $l['fastQuoteFieldNameDesc'] = 'Wartość atrybutu "name" elementu "textarea" dla szybkiej odpowiedzi (w 99% przypadków domyślna opcja jest prawidłowa)';
 $l['fastQuoteFieldNameDesc'] .= '<br />Jeżeli używasz "Advanced Quick Reply Form Plugin" powinieneś zmienić to ustawienie na "message_new".';
-
-$l['fastQuoteFullQuote'] = 'Pozwól na cytowanie MyCode';
-$l['fastQuoteFullQuoteDesc'] = 'Pozwala na cytowanie tagów MyCode (tylko dla pełnego cytatu).<br />Wyłącz tą opcję jeżeli masz problem z cytatami lub wyświetlaniem strony wątku.';
