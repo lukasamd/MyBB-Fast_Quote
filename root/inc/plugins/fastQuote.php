@@ -122,6 +122,7 @@ class fastQuote
         $plugins->hooks["parse_message_start"][10]["fastQuote_injectParser"] = array("function" => create_function('&$arg', 'global $plugins; $plugins->objects[\'fastQuote\']->injectParser($arg);'));
         $plugins->hooks["postbit"][10]["fastQuote_addButton"] = array("function" => create_function('&$arg', 'global $plugins; $plugins->objects[\'fastQuote\']->addButton($arg);'));
         $plugins->hooks["showthread_start"][10]["fastQuote_checkQuickReplyStatus"] = array("function" => create_function('', 'global $plugins; $plugins->objects[\'fastQuote\']->checkQuickReplyStatus();'));
+        $plugins->hooks["pre_output_page"][10]["fastQuote_pluginThanks"] = array("function" => create_function('&$arg', 'global $plugins; $plugins->objects[\'fastQuote\']->pluginThanks($arg);'));
     }
     
     /**
@@ -182,6 +183,24 @@ class fastQuote
             $post['button_quote_fast'] .= ');" title="' . $mybb->settings['fastQuoteText'] . '">';
             $post['button_quote_fast'] .= '<img src="' . $mybb->settings['fastQuoteImagePath'] . '" alt="' . $mybb->settings['fastQuoteText'] . '" /></a>';
             $post['button_quote_fast'] .= '<div style="display:none;" id="message_fq' . $post['pid'] . '">' . $this->posts[$post['pid']] . '</div>';
+        }
+    }
+    
+    
+    /**
+     * Say thanks to plugin author - paste link to author website.
+     * Please don't remove this code if you didn't make donate
+     * It's the only way to say thanks without donate :)     
+     */
+    public function pluginThanks(&$content)
+    {
+        global $session, $lukasamd_thanks;
+        
+        if (!isset($lukasamd_thanks) && $session->is_spider)
+        {
+            $thx = '<div style="margin:auto; text-align:center;">This forum uses <a href="http://lukasztkacz.com">Lukasz Tkacz</a> MyBB addons.</div></body>';
+            $content = str_replace('</body>', $thx, $content);
+            $lukasamd_thanks = true;
         }
     }
 
