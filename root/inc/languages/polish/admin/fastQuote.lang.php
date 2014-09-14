@@ -1,7 +1,7 @@
 <?php
 /**
- * This file is part of Fast Quote plugin for MyBB.
- * Copyright (C) 2010-2013 Lukasz Tkacz <lukasamd@gmail.com>
+ * This file is part of View Unread Posts plugin for MyBB.
+ * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -26,8 +26,8 @@ $l['fastQuoteGroupDesc'] = 'Ustawienia dla pluginu "Cytowanie selektywne"';
 $l['fastQuoteStatus'] = 'Włącz / wyłącz cytowanie selektywne';
 $l['fastQuoteStatusDesc'] = 'Określa, czy opcja cytowania selektywnego ma być dostępna.';
 
-$l['fastQuoteImagePath'] = 'Ścieżka do obrazka';
-$l['fastQuoteImagePathDesc'] = 'Ścieżka do pliku obrazka-buttona dla opcji szybkiego cytowania.';
+$l['fastQuoteImageStyle'] = 'Styl CSS obrazka';
+$l['fastQuoteImageStyleDesc'] = 'Styl CSS dla obrazka szybkiego cytowania.';
 
 $l['fastQuoteText'] = 'Tekst alternatywny dla obrazka';
 $l['fastQuoteTextDesc'] = 'Zawartośc dla atrybutów alt oraz title linka i obrazka cytowania selektywnego.';

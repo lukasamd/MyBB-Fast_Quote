@@ -1,7 +1,7 @@
 <?php
 /**
- * This file is part of Fast Quote plugin for MyBB.
- * Copyright (C) 2010-2013 Lukasz Tkacz <lukasamd@gmail.com>
+ * This file is part of View Unread Posts plugin for MyBB.
+ * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- */ 
+ */  
 
 /**
  * Disallow direct access to this file for security reasons
@@ -53,9 +53,9 @@ function fastQuote_info()
         'website' => 'http://lukasztkacz.com',
         'author' => 'Lukasz "LukasAMD" Tkacz',
         'authorsite' => 'http://lukasztkacz.com',
-        'version' => '1.5',
-        'guid' => '233a28d0a679315aa30cf168f84c3485',
-        'compatibility' => '16*'
+        'version' => '1.0.0',
+        'guid' => '',
+        'compatibility' => '18*'
     );
 }
 
@@ -68,7 +68,7 @@ function fastQuote_install()
     require_once('fastQuote.settings.php');
     fastQuoteInstaller::install();
 
-    rebuildsettings();
+    rebuild_settings();
 }
 
 function fastQuote_is_installed()
@@ -83,7 +83,7 @@ function fastQuote_uninstall()
     require_once('fastQuote.settings.php');
     fastQuoteInstaller::uninstall();
 
-    rebuildsettings();
+    rebuild_settings();
 }
 
 /**
@@ -172,16 +172,14 @@ class fastQuote
         global $lang, $mybb;
 
         $post['button_quote_fast'] = '';
-
-        if (!$this->quick_reply_status)
+        if (!$this->quick_reply_status || !$mybb->settings['fastQuoteStatus'])
         {
             return;
         }
         else
-        {
+        {  
             $post['button_quote_fast'] .= '<a href="#message" onclick="addquote(\'fq' . $post['pid'] . "','" . $post['username'] . "'";
-            $post['button_quote_fast'] .= ');" title="' . $mybb->settings['fastQuoteText'] . '">';
-            $post['button_quote_fast'] .= '<img src="' . $mybb->settings['fastQuoteImagePath'] . '" alt="' . $mybb->settings['fastQuoteText'] . '" /></a>';
+            $post['button_quote_fast'] .= ');" title="' . $mybb->settings['fastQuoteText'] . '"><span style="' . $mybb->settings['fastQuoteImageStyle'] . '">*</span></a>';
             $post['button_quote_fast'] .= '<div style="display:none;" id="message_fq' . $post['pid'] . '">' . $this->posts[$post['pid']] . '</div>';
         }
     }

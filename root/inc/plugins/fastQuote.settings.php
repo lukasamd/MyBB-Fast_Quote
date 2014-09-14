@@ -1,7 +1,7 @@
 <?php
 /**
- * This file is part of Fast Quote plugin for MyBB.
- * Copyright (C) 2010-2013 Lukasz Tkacz <lukasamd@gmail.com>
+ * This file is part of View Unread Posts plugin for MyBB.
+ * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -65,11 +65,13 @@ class fastQuoteInstaller
 
         $setting = array(
             'sid' => 'NULL',
-            'name' => 'fastQuoteImagePath',
-            'title' => $db->escape_string($lang->fastQuoteImagePath),
-            'description' => $db->escape_string($lang->fastQuoteImagePathDesc),
-            'optionscode' => 'text',
-            'value' => 'images/postbit_quote_fast.gif',
+            'name' => 'fastQuoteImageStyle',
+            'title' => $db->escape_string($lang->fastQuoteImageStyle),
+            'description' => $db->escape_string($lang->fastQuoteImageStyleDesc),
+            'optionscode' => 'textarea',
+            'value' => $db->escape_string("background-position: 0 -100px;
+padding-left:16px;
+text-indent: -9999px;"),
             'disporder' => $disporder++,
             'gid' => $gid
         );

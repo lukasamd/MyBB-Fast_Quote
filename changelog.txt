@@ -1,3 +1,10 @@
+ Version 1.0.0
+    * add compatibility with MyBB 1.8
+    * remove image - use build-in
+    * replace path to image css style               
+
+
+
 Version 1.5
     * fix XSS vulnerability
     * remove full quote mode (force enabled)        

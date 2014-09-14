@@ -1,7 +1,7 @@
 <?php
 /**
- * This file is part of Fast Quote plugin for MyBB.
- * Copyright (C) 2010-2013 Lukasz Tkacz <lukasamd@gmail.com>
+ * This file is part of View Unread Posts plugin for MyBB.
+ * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -26,8 +26,8 @@ $l['fastQuoteGroupDesc'] = 'Settings for plugin "Fast Quote"';
 $l['fastQuoteStatus'] = 'Turn on/off fast quote option';
 $l['fastQuoteStatusDesc'] = 'Specifies whether the fast quote option will be displayed.';
 
-$l['fastQuoteImagePath'] = 'Fast quote image path';
-$l['fastQuoteImagePathDesc'] = 'Path to fast quote image button.';
+$l['fastQuoteImageStyle'] = 'Fast quote button style';
+$l['fastQuoteImageStyleDesc'] = 'CSS style for the fast quote button.';
 
 $l['fastQuoteText'] = 'Alternative text for button image';
 $l['fastQuoteTextDesc'] = 'Alt and title atributes value for fast quote button image.';
