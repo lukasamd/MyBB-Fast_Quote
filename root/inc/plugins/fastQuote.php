@@ -53,8 +53,7 @@ function fastQuote_info()
         'website' => 'http://lukasztkacz.com',
         'author' => 'Lukasz "LukasAMD" Tkacz',
         'authorsite' => 'http://lukasztkacz.com',
-        'version' => '1.0.0',
-        'guid' => '',
+        'version' => '1.0.1',
         'compatibility' => '18*'
     );
 }
@@ -169,7 +168,7 @@ class fastQuote
      */
     public function addButton(&$post)
     {
-        global $lang, $mybb;
+        global $lang, $mybb, $templates;
 
         $post['button_quote_fast'] = '';
         if (!$this->quick_reply_status || !$mybb->settings['fastQuoteStatus'])
@@ -177,10 +176,17 @@ class fastQuote
             return;
         }
         else
-        {  
-            $post['button_quote_fast'] .= '<a href="#message" onclick="addquote(\'fq' . $post['pid'] . "','" . $post['username'] . "'";
-            $post['button_quote_fast'] .= ');" title="' . $mybb->settings['fastQuoteText'] . '"><span style="' . $mybb->settings['fastQuoteImageStyle'] . '">*</span></a>';
-            $post['button_quote_fast'] .= '<div style="display:none;" id="message_fq' . $post['pid'] . '">' . $this->posts[$post['pid']] . '</div>';
+        {
+            $fastquote_data = array(
+                'pid'           => $post['pid'],
+                'username'      => $post['username'],
+                'dateline'      => $post['dateline'],
+                'title'         => $mybb->settings['fastQuoteText'],
+                'style'         => $mybb->settings['fastQuoteImageStyle'],
+                'message'       => $this->posts[$post['pid']],
+            );
+            
+            eval("\$post['button_quote_fast'] .= \"" . $templates->get("fastQuote_button") . "\";");
         }
     }
     

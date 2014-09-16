@@ -111,9 +111,9 @@ var clientVer = parseInt(navigator.appVersion); // Get browser version
 var is_ie = ((clientPC.indexOf('msie') != -1) && (clientPC.indexOf('opera') == -1));
 var is_win = ((clientPC.indexOf('win') != -1) || (clientPC.indexOf('16bit') != -1));
 
-function addquote(post_id, username, l_wrote)
+function addquote(post_id, post_time, username, l_wrote)
 {
-	var message_name = 'message_' + post_id;
+	var message_name = 'message_fq' + post_id;
 	var theSelection = '';
 	var divarea = false;
 
@@ -175,7 +175,7 @@ function addquote(post_id, username, l_wrote)
 	{
 		if (bbcodeEnabled)
 		{
-			insert_text('[quote="' + username + '"]' + theSelection + '[/quote]');
+			insert_text('[quote="' + username + '" pid="' + post_id + '" dateline="' + post_time + '"]' + theSelection + '[/quote]');
 		}
 		else
 		{

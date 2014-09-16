@@ -1,4 +1,11 @@
- Version 1.0.0
+Version 1.0.1
+    * add template for quote button
+    * add css classes to customize button
+    * add backward link in quotes                    
+
+
+
+Version 1.0.0
     * add compatibility with MyBB 1.8
     * remove image - use build-in
     * replace path to image css style               
