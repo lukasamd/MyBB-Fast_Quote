@@ -1,3 +1,9 @@
+Version 1.1.0
+    * Add codename
+    * Fix focus on firefox (fix #2)
+    * Add new line after quote (fix #1)
+
+
 Version 1.0.1
     * add template for quote button
     * add css classes to customize button
