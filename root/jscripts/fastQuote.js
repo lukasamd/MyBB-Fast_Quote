@@ -34,12 +34,12 @@ function initInsertions()
 	var textarea = doc.forms[form_name].elements[text_name];
 	if (is_ie && typeof(baseHeight) != 'number')
 	{	
-		textarea.focus();
+        setTimeout(function() { textarea.focus(); }, 10);
 		baseHeight = doc.selection.createRange().duplicate().boundingHeight;
 
 		if (!document.forms[form_name])
 		{
-			document.body.focus();
+            setTimeout(function() { document.body.focus(); }, 10);
 		}
 	}
 }
@@ -78,7 +78,7 @@ function insert_text(text, spaces, popup)
 	{
 		if (baseHeight != textarea.caretPos.boundingHeight) 
 		{
-			textarea.focus();
+            setTimeout(function() { textarea.focus(); }, 10);
 			storeCaret(textarea);
 		}		
 		var caret_pos = textarea.caretPos;
@@ -91,7 +91,7 @@ function insert_text(text, spaces, popup)
 	}
 	if (!popup) 
 	{
-		textarea.focus();
+        setTimeout(function() { textarea.focus(); }, 10);
 	} 	
 
 }
@@ -175,7 +175,7 @@ function addquote(post_id, post_time, username, l_wrote)
 	{
 		if (bbcodeEnabled)
 		{
-			insert_text('[quote="' + username + '" pid="' + post_id + '" dateline="' + post_time + '"]' + theSelection + '[/quote]');
+			insert_text('[quote="' + username + '" pid="' + post_id + '" dateline="' + post_time + '"]' + theSelection + '[/quote]\n');
 		}
 		else
 		{
@@ -214,7 +214,7 @@ function mozWrap(txtarea, open, close)
 	txtarea.value = s1 + open + s2 + close + s3;
 	txtarea.selectionStart = selStart + open.length;
 	txtarea.selectionEnd = selEnd + open.length;
-	txtarea.focus();
+    setTimeout(function() { txtarea.focus(); }, 10);
 	txtarea.scrollTop = scrollTop;
 
 	return;

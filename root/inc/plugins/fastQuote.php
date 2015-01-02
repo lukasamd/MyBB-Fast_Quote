@@ -52,9 +52,10 @@ function fastQuote_info()
         'description' => $lang->fastQuoteDesc,
         'website' => 'http://lukasztkacz.com',
         'author' => 'Lukasz "LukasAMD" Tkacz',
-        'authorsite' => 'http://lukasztkacz.com',
-        'version' => '1.0.1',
-        'compatibility' => '18*'
+        'authorsite' => 'https://tkacz.it',
+        'version' => '1.1.0',
+        'compatibility' => '18*',
+        'codename' => 'fast_quote'
     );
 }
 
@@ -202,7 +203,7 @@ class fastQuote
         
         if (!isset($lukasamd_thanks) && $session->is_spider)
         {
-            $thx = '<div style="margin:auto; text-align:center;">This forum uses <a href="http://lukasztkacz.com">Lukasz Tkacz</a> MyBB addons.</div></body>';
+            $thx = '<div style="margin:auto; text-align:center;">This forum uses <a href="https://tkacz.it">Lukasz Tkacz</a> MyBB addons.</div></body>';
             $content = str_replace('</body>', $thx, $content);
             $lukasamd_thanks = true;
         }
