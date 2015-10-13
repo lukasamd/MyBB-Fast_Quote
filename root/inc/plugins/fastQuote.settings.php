@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of View Unread Posts plugin for MyBB.
+ * This file is part of Fast Quote plugin for MyBB.
  * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- */ 
+ */  
  
 /**
  * Disallow direct access to this file for security reasons
@@ -31,8 +31,7 @@ if (!defined("IN_MYBB")) exit;
 class fastQuoteInstaller
 {
 
-    public static function install()
-    {
+    public static function install() {
         global $db, $lang, $mybb;
         self::uninstall();
 
@@ -114,15 +113,13 @@ text-indent: -9999px;"),
         $db->insert_query('settings', $setting);
     }
 
-    public static function uninstall()
-    {
+    public static function uninstall() {
         global $db;
 
         $result = $db->simple_select('settinggroups', 'gid', "name = 'fastQuote'");
         $gid = (int) $db->fetch_field($result, "gid");
         
-        if ($gid > 0)
-        {
+        if ($gid > 0) {
             $db->delete_query('settings', "gid = '{$gid}'");
         }
         $db->delete_query('settinggroups', "gid = '{$gid}'");

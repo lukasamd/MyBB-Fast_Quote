@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of View Unread Posts plugin for MyBB.
+ * This file is part of Fast Quote plugin for MyBB.
  * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- */ 
+ */  
  
 /**
  * Disallow direct access to this file for security reasons
@@ -33,8 +33,7 @@ class fastQuoteActivator
 
     private static $tpl = array();
 
-    private static function getTpl()
-    {
+    private static function getTpl() {
         global $db;
         
         self::$tpl[] = array(
@@ -49,13 +48,11 @@ class fastQuoteActivator
         );  
     }
 
-    public static function activate()
-    {
+    public static function activate() {
         global $db;
         self::deactivate();
 
-        for ($i = 0; $i < sizeof(self::$tpl); $i++)
-        {
+        for ($i = 0; $i < sizeof(self::$tpl); $i++) {
             $db->insert_query('templates', self::$tpl[$i]);
         }
 
@@ -73,8 +70,7 @@ class fastQuoteActivator
         find_replace_templatesets('postbit_classic', '#{\$post\[\'button_quote\'\]}#', '{$post[\'button_quote_fast\']}{$post[\'button_quote\']}');
     }
 
-    public static function deactivate()
-    {
+    public static function deactivate() {
         global $db;
         self::getTpl();
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * This file is part of View Unread Posts plugin for MyBB.
+ * This file is part of Fast Quote plugin for MyBB.
  * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- */ 
+ */  
 
 $l['fastQuoteName'] = 'Fast Quote';
 $l['fastQuoteDesc'] = 'This plugin provide very fast quote option - select text and click button! Quote has never been so easy!';

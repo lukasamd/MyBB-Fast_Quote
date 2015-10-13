@@ -1,5 +1,5 @@
 /**
- * This file is part of View Unread Posts plugin for MyBB.
+ * This file is part of Fast Quote plugin for MyBB.
  * Copyright (C) Lukasz Tkacz <lukasamd@gmail.com>
  *
  * This program is free software: you can redistribute it and/or modify
