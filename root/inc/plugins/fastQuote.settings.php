@@ -40,7 +40,6 @@ class fastQuoteInstaller
         $disporder = 1;
 
         $settings_group = array(
-            'gid' => 'NULL',
             'name' => 'fastQuote',
             'title' => $db->escape_string($lang->fastQuoteName),
             'description' => $db->escape_string($lang->fastQuoteGroupDesc),
@@ -51,7 +50,6 @@ class fastQuoteInstaller
         $gid = (int) $db->insert_id();
 
         $setting = array(
-            'sid' => 'NULL',
             'name' => 'fastQuoteStatus',
             'title' => $db->escape_string($lang->fastQuoteStatus),
             'description' => $db->escape_string($lang->fastQuoteStatusDesc),
@@ -63,7 +61,6 @@ class fastQuoteInstaller
         $db->insert_query('settings', $setting);
 
         $setting = array(
-            'sid' => 'NULL',
             'name' => 'fastQuoteImageStyle',
             'title' => $db->escape_string($lang->fastQuoteImageStyle),
             'description' => $db->escape_string($lang->fastQuoteImageStyleDesc),
@@ -77,7 +74,6 @@ text-indent: -9999px;"),
         $db->insert_query('settings', $setting);
 
         $setting = array(
-            'sid' => 'NULL',
             'name' => 'fastQuoteText',
             'title' => $db->escape_string($lang->fastQuoteText),
             'description' => $db->escape_string($lang->fastQuoteTextDesc),
@@ -89,7 +85,6 @@ text-indent: -9999px;"),
         $db->insert_query('settings', $setting);
 
         $setting = array(
-            'sid' => 'NULL',
             'name' => 'fastQuoteFormName',
             'title' => $db->escape_string($lang->fastQuoteFormName),
             'description' => $db->escape_string($lang->fastQuoteFormNameDesc),
@@ -101,7 +96,6 @@ text-indent: -9999px;"),
         $db->insert_query('settings', $setting);
 
         $setting = array(
-            'sid' => 'NULL',
             'name' => 'fastQuoteFieldName',
             'title' => $db->escape_string($lang->fastQuoteFieldName),
             'description' => $db->escape_string($lang->fastQuoteFieldNameDesc),

@@ -1,3 +1,9 @@
+Version 1.3.0
+    * fix installation (close #6)
+    * remove thanks code
+
+
+
 Version 1.2.0
     * small fix in usernames
     * code cleanup

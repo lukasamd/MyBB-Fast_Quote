@@ -31,7 +31,6 @@ if (!defined("IN_MYBB")) exit;
 $plugins->add_hook('parse_message_start', ['fastQuote', 'injectParser']);
 $plugins->add_hook('postbit', ['fastQuote', 'addButton']);
 $plugins->add_hook('showthread_start', ['fastQuote', 'checkQuickReplyStatus']);
-$plugins->add_hook('pre_output_page', ['fastQuote', 'pluginThanks']);
 
 
 /**
@@ -42,20 +41,14 @@ function fastQuote_info() {
     global $lang;
 
     $lang->load('fastQuote');
-    $lang->fastQuoteDesc = '<form action="https://www.paypal.com/cgi-bin/webscr" method="post" style="float:right;">' .
-        '<input type="hidden" name="cmd" value="_s-xclick">' . 
-        '<input type="hidden" name="hosted_button_id" value="3BTVZBUG6TMFQ">' .
-        '<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">' .
-        '<img alt="" border="0" src="https://www.paypalobjects.com/pl_PL/i/scr/pixel.gif" width="1" height="1">' .
-        '</form>' . $lang->fastQuoteDesc;
 
     return Array(
         'name' => $lang->fastQuoteName,
         'description' => $lang->fastQuoteDesc,
-        'website' => 'https://lukasztkacz.com',
-        'author' => 'Lukasz "LukasAMD" Tkacz',
-        'authorsite' => 'https://lukasztkacz.com',
-        'version' => '1.2.0',
+        'website' => 'https://tkacz.pro',
+        'author' => 'Lukasz Tkacz',
+        'authorsite' => 'https://tkacz.pro',
+        'version' => '1.3.0',
         'compatibility' => '18*',
         'codename' => 'fast_quote'
     );
@@ -110,6 +103,7 @@ class fastQuote
 
     /**
      * Collect post data if full quote option is enabled
+	 *
      *
      */
     public function injectParser($message) {
@@ -148,7 +142,7 @@ class fastQuote
      *
      */
     public function addButton(&$post) {
-        global $lang, $db, $mybb, $templates;
+        global $lang, $mybb, $templates;
 
         $post['button_quote_fast'] = '';
         if (!self::$quick_reply_status || !$mybb->settings['fastQuoteStatus']) {
@@ -163,24 +157,8 @@ class fastQuote
                 'style'         => $mybb->settings['fastQuoteImageStyle'],
                 'message'       => self::$posts[$post['pid']],
             );
-            
+
             eval("\$post['button_quote_fast'] .= \"" . $templates->get("fastQuote_button") . "\";");
-        }
-    }
-    
-    
-    /**
-     * Say thanks to plugin author - paste link to author website.
-     * Please don't remove this code if you didn't make donate
-     * It's the only way to say thanks without donate :)     
-     */
-    public function pluginThanks(&$content) {
-        global $session, $lukasamd_thanks;
-        
-        if (!isset($lukasamd_thanks) && $session->is_spider) {
-            $thx = '<div style="margin:auto; text-align:center;">This forum uses <a href="https://lukasztkacz.com">Lukasz Tkacz</a> MyBB addons.</div></body>';
-            $content = str_replace('</body>', $thx, $content);
-            $lukasamd_thanks = true;
         }
     }
 

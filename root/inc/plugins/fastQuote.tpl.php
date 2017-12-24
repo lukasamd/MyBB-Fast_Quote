@@ -37,7 +37,6 @@ class fastQuoteActivator
         global $db;
         
         self::$tpl[] = array(
-            "tid" => NULL,
             "title" => 'fastQuote_button',
             "template" => $db->escape_string('
 <a href="#message" onclick="addquote(\'{$fastquote_data[\'pid\']}\',\'{$fastquote_data[\'dateline\']}\',\'{$fastquote_data[\'username\']}\');" title="{$fastquote_data[\'title\']}" class="postbit_fastquote"><span class="postbit_fastquote_span" style="{$fastquote_data[\'style\']}">*</span></a>
