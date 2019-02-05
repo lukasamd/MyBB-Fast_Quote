@@ -1,5 +1,12 @@
+# Plugin is abandoned
+I decided to stop developling MyBB addons. You can find details here:
+
+https://github.com/lukasamd/MyBB-View_Unread_posts/issues/25
+
+---
 This plugin provide very fast quote option - select text and click button! 
-[b]Quote has never been so easy![/b]
+
+Quote has never been so easy!
 
 Additional fast quote button provide super-fast option to quote selected text.
 It supports whole post (just click it), or only selected area.
