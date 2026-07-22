@@ -22,7 +22,9 @@
  * Disallow direct access to this file for security reasons
  * 
  */
-if (!defined("IN_MYBB")) exit;
+if (!defined('IN_MYBB')) {
+    exit;
+}
 
 /**
  * Plugin Activator Class
@@ -35,11 +37,13 @@ class fastQuoteActivator
 
     private static function getTpl() {
         global $db;
+
+        self::$tpl = array();
         
         self::$tpl[] = array(
             "title" => 'fastQuote_button',
             "template" => $db->escape_string('
-<a href="#message" onclick="addquote(\'{$fastquote_data[\'pid\']}\',\'{$fastquote_data[\'dateline\']}\',\'{$fastquote_data[\'username\']}\');" title="{$fastquote_data[\'title\']}" class="postbit_fastquote"><span class="postbit_fastquote_span" style="{$fastquote_data[\'style\']}">*</span></a>
+<a href="#message" title="{$fastquote_data[\'title\']}" class="postbit_fastquote" data-fastquote-pid="{$fastquote_data[\'pid\']}" data-fastquote-dateline="{$fastquote_data[\'dateline\']}" data-fastquote-username="{$fastquote_data[\'username\']}" data-fastquote-message-id="message_fq{$fastquote_data[\'pid\']}"><span class="postbit_fastquote_span" style="{$fastquote_data[\'style\']}">*</span></a>
 <div style="display:none;" id="message_fq{$fastquote_data[\'pid\']}">{$fastquote_data[\'message\']}</div>'),
             "sid" => "-1",
             "version" => "1.0",
@@ -51,16 +55,17 @@ class fastQuoteActivator
         global $db;
         self::deactivate();
 
-        for ($i = 0; $i < sizeof(self::$tpl); $i++) {
+        for ($i = 0; $i < count(self::$tpl); $i++) {
             $db->insert_query('templates', self::$tpl[$i]);
         }
 
+        require_once MYBB_ROOT . '/inc/adminfunctions_templates.php';
+
         $showthreadChange = "<!-- start: FastQuote -->\n";
-        $showthreadChange .= "<script type=\"text/javascript\" src=\"jscripts/fastQuote.js\"></script>\n";
         $showthreadChange .= "<script type=\"text/javascript\">\n";
-        $showthreadChange .= 'var form_name = \'{$mybb->settings[\'fastQuoteFormName\']}\';' . "\n";
-        $showthreadChange .= 'var text_name = \'{$mybb->settings[\'fastQuoteFieldName\']}\';' . "\n";
+        $showthreadChange .= "window.FastQuoteConfig = {\$fastquote_config};\n";
         $showthreadChange .= "</script>\n";
+        $showthreadChange .= "<script type=\"text/javascript\" src=\"jscripts/fastQuote.js\"></script>\n";
         $showthreadChange .= "<!-- end: FastQuote -->\n";
         $showthreadChange .= "</head>";
 
@@ -73,12 +78,12 @@ class fastQuoteActivator
         global $db;
         self::getTpl();
 
-        for ($i = 0; $i < sizeof(self::$tpl); $i++)
+        for ($i = 0; $i < count(self::$tpl); $i++)
         {
             $db->delete_query('templates', "title = '" . self::$tpl[$i]['title'] . "'");
         }
 
-        include MYBB_ROOT . '/inc/adminfunctions_templates.php';
+        require_once MYBB_ROOT . '/inc/adminfunctions_templates.php';
         find_replace_templatesets('showthread', "#<\!-- start: FastQuote -->.*<\!-- end: FastQuote -->\n#siU", '', 0);
         find_replace_templatesets('postbit', '#{\$post\[\'button_quote_fast\'\]}#', '', 0);
         find_replace_templatesets('postbit_classic', '#{\$post\[\'button_quote_fast\'\]}#', '', 0);

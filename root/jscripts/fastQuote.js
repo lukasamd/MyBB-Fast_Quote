@@ -14,208 +14,117 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */ 
- 
-/* All code from phpBB3 SEO Premod, based on GPLv2 License */ 
-function initInsertions() 
-{
-	var doc;
+ */
 
-	if (document.forms[form_name])
-	{
-		doc = document;
-	}
-	else 
-	{
-		doc = opener.document;
-	}
+(function ($, window, document) {
+    'use strict';
 
-	var textarea = doc.forms[form_name].elements[text_name];
-	if (is_ie && typeof(baseHeight) != 'number')
-	{	
-        setTimeout(function() { textarea.focus(); }, 10);
-		baseHeight = doc.selection.createRange().duplicate().boundingHeight;
+    var FastQuote = {
+        config: {
+            formName: 'quick_reply_form',
+            fieldName: 'message'
+        },
 
-		if (!document.forms[form_name])
-		{
-            setTimeout(function() { document.body.focus(); }, 10);
-		}
-	}
-}
+        init: function () {
+            FastQuote.config = $.extend({}, FastQuote.config, window.FastQuoteConfig || {});
 
-/**
-* Insert text at position
-*/
-function insert_text(text, spaces, popup)
-{
-	var textarea;
-	
-	if (!popup) 
-	{
-		textarea = document.forms[form_name].elements[text_name];
-	} 
-	else 
-	{
-		textarea = opener.document.forms[form_name].elements[text_name];
-	}
-	if (spaces) 
-	{
-		text = ' ' + text + ' ';
-	}
-	
-	if (!isNaN(textarea.selectionStart))
-	{
-		var sel_start = textarea.selectionStart;
-		var sel_end = textarea.selectionEnd;
+            $(document).on('click', '.postbit_fastquote', FastQuote.handleClick);
+        },
 
-		mozWrap(textarea, text, '');
-		textarea.selectionStart = sel_start + text.length;
-		textarea.selectionEnd = sel_end + text.length;
-	}	
-	
-	else if (textarea.createTextRange && textarea.caretPos)
-	{
-		if (baseHeight != textarea.caretPos.boundingHeight) 
-		{
-            setTimeout(function() { textarea.focus(); }, 10);
-			storeCaret(textarea);
-		}		
-		var caret_pos = textarea.caretPos;
-		caret_pos.text = caret_pos.text.charAt(caret_pos.text.length - 1) == ' ' ? caret_pos.text + text + ' ' : caret_pos.text + text;
-		
-	}
-	else
-	{
-		textarea.value = textarea.value + text;
-	}
-	if (!popup) 
-	{
-        setTimeout(function() { textarea.focus(); }, 10);
-	} 	
+        handleClick: function (event) {
+            var button = event.currentTarget;
+            var pid = parseInt(button.getAttribute('data-fastquote-pid'), 10) || 0;
+            var dateline = parseInt(button.getAttribute('data-fastquote-dateline'), 10) || 0;
+            var username = button.getAttribute('data-fastquote-username') || '';
+            var message = FastQuote.getSelectedText() || FastQuote.getStoredMessage(button);
 
-}
+            event.preventDefault();
 
+            if (!message) {
+                return false;
+            }
 
+            FastQuote.insert('[quote="' + FastQuote.escapeQuoteAttribute(username) + '" pid="' + pid + '" dateline="' + dateline + '"]' + message + '[/quote]\n');
 
-// Startup variables
-var imageTag = false;
-var theSelection = false;
-var bbcodeEnabled = true;
+            return false;
+        },
 
-// Check for Browser & Platform for PC & IE specific bits
-// More details from: http://www.mozilla.org/docs/web-developer/sniffer/browser_type.html
-var clientPC = navigator.userAgent.toLowerCase(); // Get client info
-var clientVer = parseInt(navigator.appVersion); // Get browser version
+        getSelectedText: function () {
+            var selection = '';
 
-var is_ie = ((clientPC.indexOf('msie') != -1) && (clientPC.indexOf('opera') == -1));
-var is_win = ((clientPC.indexOf('win') != -1) || (clientPC.indexOf('16bit') != -1));
+            if (window.getSelection) {
+                selection = window.getSelection().toString();
+            } else if (document.getSelection) {
+                selection = document.getSelection().toString();
+            }
 
-function addquote(post_id, post_time, username, l_wrote)
-{
-	var message_name = 'message_fq' + post_id;
-	var theSelection = '';
-	var divarea = false;
+            return $.trim(selection);
+        },
 
-	if (l_wrote === undefined)
-	{
-		// Backwards compatibility
-		l_wrote = 'wrote';
-	}
+        getStoredMessage: function (button) {
+            var messageId = button.getAttribute('data-fastquote-message-id');
+            var messageElement = messageId ? document.getElementById(messageId) : null;
 
-	if (document.all)
-	{
-		divarea = document.all[message_name];
-	}
-	else
-	{
-		divarea = document.getElementById(message_name);
-	}
+            if (!messageElement) {
+                return '';
+            }
 
-	// Get text selection - not only the post content :(
-	if (window.getSelection)
-	{
-		theSelection = window.getSelection().toString();
-	}
-	else if (document.getSelection)
-	{
-		theSelection = document.getSelection();
-	}
-	else if (document.selection)
-	{
-		theSelection = document.selection.createRange().text;
-	}
+            return messageElement.textContent || messageElement.innerText || '';
+        },
 
-	if (theSelection == '' || typeof theSelection == 'undefined' || theSelection == null)
-	{
-		if (divarea.innerHTML)
-		{
-			theSelection = divarea.innerHTML.replace(/<br>/ig, '\n');
-			theSelection = theSelection.replace(/<br\/>/ig, '\n');
-			theSelection = theSelection.replace(/&lt\;/ig, '<');
-			theSelection = theSelection.replace(/&gt\;/ig, '>');
-			theSelection = theSelection.replace(/&amp\;/ig, '&');
-			theSelection = theSelection.replace(/&nbsp\;/ig, ' ');
-		}
-		else if (document.all)
-		{
-			theSelection = divarea.innerText;
-		}
-		else if (divarea.textContent)
-		{
-			theSelection = divarea.textContent;
-		}
-		else if (divarea.firstChild.nodeValue)
-		{
-			theSelection = divarea.firstChild.nodeValue;
-		}
-	}
+        insert: function (quote) {
+            var textarea = FastQuote.getTextarea();
 
-	if (theSelection)
-	{
-		if (bbcodeEnabled)
-		{
-			insert_text('[quote="' + username + '" pid="' + post_id + '" dateline="' + post_time + '"]' + theSelection + '[/quote]\n');
-		}
-		else
-		{
-			insert_text(username + ' ' + l_wrote + ':' + '\n');
-			var lines = split_lines(theSelection);
-			for (i = 0; i < lines.length; i++)
-			{
-				insert_text('> ' + lines[i] + '\n');
-			}
-		}
-	}
+            if (typeof window.MyBBEditor !== 'undefined' && window.MyBBEditor !== null && typeof window.MyBBEditor.insert === 'function') {
+                window.MyBBEditor.insert(quote);
+                return;
+            }
 
-	return;
-}
+            if (!textarea) {
+                return;
+            }
 
+            if (typeof textarea.selectionStart === 'number' && typeof textarea.selectionEnd === 'number') {
+                FastQuote.insertAtSelection(textarea, quote);
+            } else {
+                textarea.value += quote;
+            }
 
-/**
-* From http://www.massless.org/mozedit/
-*/
-function mozWrap(txtarea, open, close)
-{
-	var selLength = (typeof(txtarea.textLength) == 'undefined') ? txtarea.value.length : txtarea.textLength;
-	var selStart = txtarea.selectionStart;
-	var selEnd = txtarea.selectionEnd;
-	var scrollTop = txtarea.scrollTop;
+            textarea.focus();
+        },
 
-	if (selEnd == 1 || selEnd == 2) 
-	{
-		selEnd = selLength;
-	}
+        getTextarea: function () {
+            var form = document.forms[FastQuote.config.formName];
 
-	var s1 = (txtarea.value).substring(0,selStart);
-	var s2 = (txtarea.value).substring(selStart, selEnd);
-	var s3 = (txtarea.value).substring(selEnd, selLength);
+            if (form && form.elements[FastQuote.config.fieldName]) {
+                return form.elements[FastQuote.config.fieldName];
+            }
 
-	txtarea.value = s1 + open + s2 + close + s3;
-	txtarea.selectionStart = selStart + open.length;
-	txtarea.selectionEnd = selEnd + open.length;
-    setTimeout(function() { txtarea.focus(); }, 10);
-	txtarea.scrollTop = scrollTop;
+            if (FastQuote.config.fieldName) {
+                return document.getElementsByName(FastQuote.config.fieldName)[0] || document.getElementById(FastQuote.config.fieldName);
+            }
 
-	return;
-}
+            return document.getElementById('message');
+        },
+
+        insertAtSelection: function (textarea, quote) {
+            var start = textarea.selectionStart;
+            var end = textarea.selectionEnd;
+            var scrollTop = textarea.scrollTop;
+
+            textarea.value = textarea.value.substring(0, start) + quote + textarea.value.substring(end);
+            textarea.selectionStart = start + quote.length;
+            textarea.selectionEnd = start + quote.length;
+            textarea.scrollTop = scrollTop;
+        },
+
+        escapeQuoteAttribute: function (username) {
+            return String(username)
+                .replace(/[\r\n]+/g, ' ')
+                .replace(/"/g, '&quot;');
+        }
+    };
+
+    window.FastQuote = FastQuote;
+    $(FastQuote.init);
+}(jQuery, window, document));

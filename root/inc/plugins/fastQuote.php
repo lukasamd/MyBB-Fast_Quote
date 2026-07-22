@@ -22,15 +22,17 @@
  * Disallow direct access to this file for security reasons
  * 
  */
-if (!defined("IN_MYBB")) exit;
+if (!defined('IN_MYBB')) {
+    exit;
+}
 
 /**
  * Add hooks
  * 
  */
-$plugins->add_hook('parse_message_start', ['fastQuote', 'injectParser']);
-$plugins->add_hook('postbit', ['fastQuote', 'addButton']);
-$plugins->add_hook('showthread_start', ['fastQuote', 'checkQuickReplyStatus']);
+$plugins->add_hook('parse_message_start', array('fastQuote', 'injectParser'));
+$plugins->add_hook('postbit', array('fastQuote', 'addButton'));
+$plugins->add_hook('showthread_start', array('fastQuote', 'checkQuickReplyStatus'));
 
 
 /**
@@ -42,13 +44,13 @@ function fastQuote_info() {
 
     $lang->load('fastQuote');
 
-    return Array(
+    return array(
         'name' => $lang->fastQuoteName,
         'description' => $lang->fastQuoteDesc,
         'website' => 'https://tkacz.pro',
         'author' => 'Lukasz Tkacz',
         'authorsite' => 'https://tkacz.pro',
-        'version' => '1.3.0',
+        'version' => '2.0.0',
         'compatibility' => '18*',
         'codename' => 'fast_quote'
     );
@@ -59,7 +61,7 @@ function fastQuote_info() {
  * 
  */
 function fastQuote_install() {
-    require_once('fastQuote.settings.php');
+    require_once dirname(__FILE__).'/fastQuote.settings.php';
     fastQuoteInstaller::install();
 
     rebuild_settings();
@@ -72,7 +74,7 @@ function fastQuote_is_installed() {
 }
 
 function fastQuote_uninstall() {
-    require_once('fastQuote.settings.php');
+    require_once dirname(__FILE__).'/fastQuote.settings.php';
     fastQuoteInstaller::uninstall();
 
     rebuild_settings();
@@ -83,12 +85,12 @@ function fastQuote_uninstall() {
  * 
  */
 function fastQuote_activate() {
-    require_once('fastQuote.tpl.php');
+    require_once dirname(__FILE__).'/fastQuote.tpl.php';
     fastQuoteActivator::activate();
 }
 
 function fastQuote_deactivate() {
-    require_once('fastQuote.tpl.php');
+    require_once dirname(__FILE__).'/fastQuote.tpl.php';
     fastQuoteActivator::deactivate();
 }
 
@@ -98,7 +100,7 @@ function fastQuote_deactivate() {
  */
 class fastQuote
 {
-    private static $posts;
+    private static $posts = array();
     private static $quick_reply_status = false;
 
     /**
@@ -106,14 +108,16 @@ class fastQuote
 	 *
      *
      */
-    public function injectParser($message) {
+    public static function injectParser($message) {
         global $mybb, $post;
         
-        if (THIS_SCRIPT == 'showthread.php' 
-            && $mybb->user['uid'] > 0 
-            && $mybb->settings['fastQuoteStatus']
+        if (defined('THIS_SCRIPT')
+            && THIS_SCRIPT == 'showthread.php'
+            && !empty($post['pid'])
+            && !empty($mybb->user['uid'])
+            && self::isEnabled()
         ) {
-            self::$posts[$post['pid']] = htmlspecialchars($post['message']);
+            self::$posts[(int)$post['pid']] = htmlspecialchars_uni(isset($post['message']) ? $post['message'] : '');
         }
             
         return $message;
@@ -123,15 +127,23 @@ class fastQuote
      * Check is quick reply enabled
      *
      */
-    public function checkQuickReplyStatus() {
-        global $fid, $forum, $forumpermissions, $mybb, $thread;
-        
-        if ($forumpermissions['canpostreplys'] != 0 
-            && $mybb->user['suspendposting'] != 1 
-            && ($thread['closed'] != 1 || is_moderator($fid)) 
-            && $mybb->settings['quickreply'] != 0 
-            && $mybb->user['showquickreply'] != '0' 
-            && $forum['open'] != 0
+    public static function checkQuickReplyStatus(&$unused = null) {
+        global $fastquote_config, $fid, $forum, $forumpermissions, $mybb, $thread;
+
+        self::$quick_reply_status = false;
+        $fastquote_config = self::buildJsConfig();
+
+        if (!self::isEnabled()) {
+            return;
+        }
+
+        if (!empty($forumpermissions['canpostreplys'])
+            && empty($mybb->user['suspendposting'])
+            && (empty($thread['closed']) || is_moderator((int)$fid, 'canpostclosedthreads'))
+            && !empty($mybb->settings['quickreply'])
+            && (!isset($mybb->user['showquickreply']) || $mybb->user['showquickreply'] != '0')
+            && !empty($forum['open'])
+            && (!isset($forumpermissions['canonlyreplyownthreads']) || empty($forumpermissions['canonlyreplyownthreads']) || (int)$thread['uid'] === (int)$mybb->user['uid'])
         ) {
             self::$quick_reply_status = true;
         }
@@ -141,25 +153,52 @@ class fastQuote
      * Add fast quote button to post data
      *
      */
-    public function addButton(&$post) {
+    public static function addButton(&$post) {
         global $lang, $mybb, $templates;
 
         $post['button_quote_fast'] = '';
-        if (!self::$quick_reply_status || !$mybb->settings['fastQuoteStatus']) {
+        if (!self::$quick_reply_status || !self::isEnabled()) {
             return;
         }
-        else {
-            $fastquote_data = array(
-                'pid'           => $post['pid'],
-                'username'      => str_replace(array('\'', '"'), '', $post['username']),
-                'dateline'      => $post['dateline'],
-                'title'         => $mybb->settings['fastQuoteText'],
-                'style'         => $mybb->settings['fastQuoteImageStyle'],
-                'message'       => self::$posts[$post['pid']],
-            );
 
-            eval("\$post['button_quote_fast'] .= \"" . $templates->get("fastQuote_button") . "\";");
-        }
+        $pid = isset($post['pid']) ? (int)$post['pid'] : 0;
+        $fastquote_data = array(
+            'pid' => $pid,
+            'username' => self::escapeAttribute(isset($post['username']) ? $post['username'] : ''),
+            'dateline' => isset($post['dateline']) ? (int)$post['dateline'] : 0,
+            'title' => self::escapeAttribute(self::getSetting('fastQuoteText')),
+            'style' => self::escapeAttribute(self::getSetting('fastQuoteImageStyle')),
+            'message' => isset(self::$posts[$pid]) ? self::$posts[$pid] : '',
+        );
+
+        eval("\$post['button_quote_fast'] .= \"" . $templates->get('fastQuote_button') . "\";");
+    }
+
+    private static function isEnabled()
+    {
+        return (bool)self::getSetting('fastQuoteStatus');
+    }
+
+    private static function getSetting($name)
+    {
+        global $mybb;
+
+        return isset($mybb->settings[$name]) ? $mybb->settings[$name] : '';
+    }
+
+    private static function escapeAttribute($value)
+    {
+        return htmlspecialchars_uni((string)$value);
+    }
+
+    private static function buildJsConfig()
+    {
+        $config = array(
+            'formName' => self::getSetting('fastQuoteFormName') ?: 'quick_reply_form',
+            'fieldName' => self::getSetting('fastQuoteFieldName') ?: 'message',
+        );
+
+        return json_encode($config, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_AMP | JSON_HEX_QUOT);
     }
 
 }

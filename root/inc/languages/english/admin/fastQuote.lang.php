@@ -19,7 +19,7 @@
  */  
 
 $l['fastQuoteName'] = 'Fast Quote';
-$l['fastQuoteDesc'] = 'This plugin provide very fast quote option - select text and click button! Quote has never been so easy!';
+$l['fastQuoteDesc'] = 'This plugin provides a very fast quote option - select text and click the button! Quote has never been so easy!';
 
 $l['fastQuoteGroupDesc'] = 'Settings for plugin "Fast Quote"';
 
@@ -30,7 +30,7 @@ $l['fastQuoteImageStyle'] = 'Fast quote button style';
 $l['fastQuoteImageStyleDesc'] = 'CSS style for the fast quote button.';
 
 $l['fastQuoteText'] = 'Alternative text for button image';
-$l['fastQuoteTextDesc'] = 'Alt and title atributes value for fast quote button image.';
+$l['fastQuoteTextDesc'] = 'Alt and title attributes value for fast quote button image.';
 $l['fastQuoteTextDef'] = 'Fast quote';
 
 $l['fastQuoteFormName'] = 'Quick reply form name';

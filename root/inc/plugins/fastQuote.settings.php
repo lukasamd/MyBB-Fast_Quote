@@ -22,7 +22,9 @@
  * Disallow direct access to this file for security reasons
  * 
  */
-if (!defined("IN_MYBB")) exit;
+if (!defined('IN_MYBB')) {
+    exit;
+}
 
 /**
  * Plugin Installator Class
@@ -36,7 +38,7 @@ class fastQuoteInstaller
         self::uninstall();
 
         $result = $db->simple_select('settinggroups', 'MAX(disporder) AS max_disporder');
-        $max_disporder = $db->fetch_field($result, 'max_disporder');
+        $max_disporder = (int)$db->fetch_field($result, 'max_disporder');
         $disporder = 1;
 
         $settings_group = array(
@@ -78,7 +80,7 @@ text-indent: -9999px;"),
             'title' => $db->escape_string($lang->fastQuoteText),
             'description' => $db->escape_string($lang->fastQuoteTextDesc),
             'optionscode' => 'text',
-            'value' => $lang->fastQuoteTextDef,
+            'value' => $db->escape_string($lang->fastQuoteTextDef),
             'disporder' => $disporder++,
             'gid' => $gid
         );

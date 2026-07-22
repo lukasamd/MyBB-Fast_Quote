@@ -1,3 +1,13 @@
+Version 2.0.0
+    * refactor hook methods for PHP 8 compatibility
+    * replace legacy phpBB/IE JavaScript with a MyBB-oriented module
+    * remove inline JavaScript from the quote button template
+    * escape quote button data for HTML attributes
+    * keep existing settings for easier upgrades
+    * update documentation for current MyBB 1.8.x releases
+
+
+
 Version 1.3.0
     * fix installation (close #6)
     * remove thanks code

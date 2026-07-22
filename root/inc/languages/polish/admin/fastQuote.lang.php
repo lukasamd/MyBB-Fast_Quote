@@ -19,7 +19,7 @@
  */    
 
 $l['fastQuoteName'] = 'Cytowanie selektywne';
-$l['fastQuoteDesc'] = 'Ten plugin dodaje opcję cytowania selektywnego - zaznaczasz teks i klikasz! Cytowanie jeszcze nigdy nie było tak proste!';
+$l['fastQuoteDesc'] = 'Ten plugin dodaje opcję cytowania selektywnego - zaznaczasz tekst i klikasz! Cytowanie jeszcze nigdy nie było tak proste!';
 
 $l['fastQuoteGroupDesc'] = 'Ustawienia dla pluginu "Cytowanie selektywne"';
 
@@ -30,7 +30,7 @@ $l['fastQuoteImageStyle'] = 'Styl CSS obrazka';
 $l['fastQuoteImageStyleDesc'] = 'Styl CSS dla obrazka szybkiego cytowania.';
 
 $l['fastQuoteText'] = 'Tekst alternatywny dla obrazka';
-$l['fastQuoteTextDesc'] = 'Zawartośc dla atrybutów alt oraz title linka i obrazka cytowania selektywnego.';
+$l['fastQuoteTextDesc'] = 'Zawartość dla atrybutów alt oraz title linka i obrazka cytowania selektywnego.';
 $l['fastQuoteTextDef'] = 'Cytowanie selektywne';
 
 $l['fastQuoteFormName'] = 'Nazwa formularza szybkiej odpowiedzi';

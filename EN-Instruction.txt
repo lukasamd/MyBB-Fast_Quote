@@ -28,3 +28,10 @@
 2. Go to ACP -> Plugins and activate "Fast Quote" plugin
 
 3. Optionally, change the settings in APC -> Configuration -> Fast Quote
+
+
+UPDATE
+
+1. Upload all files from the "root" directory to your MyBB installation.
+
+2. Deactivate and activate the plugin again to refresh the Fast Quote templates.
